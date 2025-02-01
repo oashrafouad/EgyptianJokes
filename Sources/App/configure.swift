@@ -18,7 +18,7 @@ public func configure(_ app: Application) async throws {
     app.databases.use(.postgres(configuration: postgresConfig), as: .psql)
 
     // Register migrations
-    app.migrations.add(CreateUser())
+    app.migrations.add(CreateJoke())
 
     // Register routes
     try routes(app)

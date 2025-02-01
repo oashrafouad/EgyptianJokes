@@ -10,8 +10,10 @@ func routes(_ app: Application) throws {
         "Hello, world!"
     }
 
-    app.get("example") { req async -> String in
-        "This is an example"
+    app.post("***REMOVED***") { req async throws -> Joke in
+        let joke = try req.content.decode(Joke.self)
+        try await joke.save(on: req.db)
+        return joke
     }
 
     app.get("db-test") { req async throws -> String in
