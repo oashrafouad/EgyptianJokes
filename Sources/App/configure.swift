@@ -8,10 +8,10 @@ public func configure(_ app: Application) async throws {
 
     // Database configuration
     let postgresConfig = SQLPostgresConfiguration(
-        hostname: "localhost",
-        port: SQLPostgresConfiguration.ianaPortNumber,
-        username: "omar",
-        password: "mypassword",
+        hostname: "***REMOVED***",
+        port: ***REMOVED***,
+        username: "***REMOVED***",
+        password: "***REMOVED***",
         database: "postgres",
         tls: .disable
     )

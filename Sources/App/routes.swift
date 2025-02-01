@@ -15,7 +15,7 @@ func routes(_ app: Application) throws {
     }
 
     app.get("db-test") { req async throws -> String in
-        let user = User(name: "Test User 2")
+        let user = User(name: "Omar")
         try await user.save(on: req.db)
         return "Database connection works!"
     }
