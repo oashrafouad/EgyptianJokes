@@ -1,9 +1,25 @@
 import Vapor
+import Fluent
+import FluentPostgresDriver
 
-// configures your application
 public func configure(_ app: Application) async throws {
-    // uncomment to serve files from /Public folder
-    // app.middleware.use(FileMiddleware(publicDirectory: app.directory.publicDirectory))
-    // register routes
+    // Set log level to debug
+    app.logger.logLevel = .debug
+
+    // Database configuration
+    let postgresConfig = SQLPostgresConfiguration(
+        hostname: "localhost",
+        port: SQLPostgresConfiguration.ianaPortNumber,
+        username: "omar",
+        password: "mypassword",
+        database: "postgres",
+        tls: .disable
+    )
+    app.databases.use(.postgres(configuration: postgresConfig), as: .psql)
+
+    // Register migrations
+    app.migrations.add(CreateUser())
+
+    // Register routes
     try routes(app)
 }
