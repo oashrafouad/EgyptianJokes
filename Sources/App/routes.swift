@@ -1,13 +1,16 @@
-import Vapor
 import Fluent
+import Vapor
 
 func routes(_ app: Application) throws {
     app.get { req async in
-        "It works!"
+        "Call /joke to get a random joke"
     }
 
-    app.get("hello") { req async -> String in
-        "Hello, world!"
+    app.get("joke") { req async throws -> Joke in
+        guard let joke = try await Joke.query(on: req.db).all().randomElement() else {
+            throw Abort(.notFound, reason: "No jokes found")
+        }
+        return joke
     }
 
     app.post("***REMOVED***") { req async throws -> Joke in
@@ -16,9 +19,9 @@ func routes(_ app: Application) throws {
         return joke
     }
 
-    app.get("db-test") { req async throws -> String in
-        let user = User(name: "Omar")
-        try await user.save(on: req.db)
-        return "Database connection works!"
-    }
+    // app.get("db-test") { req async throws -> String in
+    //     let user = User(name: "Omar")
+    //     try await user.save(on: req.db)
+    //     return "Database connection works!"
+    // }
 }
