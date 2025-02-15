@@ -1,11 +1,14 @@
-import Vapor
 import Fluent
 import FluentPostgresDriver
-import NIOSSL
+import Vapor
 
 public func configure(_ app: Application) async throws {
-    app.logger.logLevel = .debug  // Set to debug temporarily
-    
+    if app.environment == .production {
+        app.logger.logLevel = .warning
+    } else {
+        app.logger.logLevel = .debug
+    }
+
     let postgresConfig = SQLPostgresConfiguration(
         hostname: Environment.get("DB_HOST") ?? "localhost",
         port: Environment.get("DB_PORT").flatMap(Int.init) ?? 5432,
@@ -14,12 +17,10 @@ public func configure(_ app: Application) async throws {
         database: Environment.get("DB_NAME") ?? "postgres",
         tls: .disable
     )
-    
+
     app.databases.use(.postgres(configuration: postgresConfig), as: .psql)
-    
-    // Register migrations
+
     app.migrations.add(CreateJoke())
-    
-    // Register routes
+
     try routes(app)
 }
