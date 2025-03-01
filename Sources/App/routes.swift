@@ -12,8 +12,7 @@ func routes(_ app: Application) throws {
         }
         return JokeResponse(joke: joke)
     }
-
-    app.post("***REMOVED***") { req async throws -> JokeResponse in
+    app.post("\(Environment.get("ADD_JOKE_ENDPOINT") ?? "")") { req async throws -> JokeResponse in
         let joke = try req.content.decode(Joke.self)
         try await joke.save(on: req.db)
         return JokeResponse(joke: joke)
